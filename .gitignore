@@ -1,0 +1,7 @@
+log/
+*.env
+.vscode/
+*.code-workspace
+.idea/
+tmp/
+deploy/
