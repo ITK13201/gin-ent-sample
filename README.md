@@ -1,4 +1,4 @@
-# Gin Ent sample
+# Gin Ent Sample
 
 This is a sample application of golang's web framework gin and orm ent.
 
