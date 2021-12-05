@@ -12,6 +12,7 @@ RUN wget https://github.com/pressly/goose/releases/download/${goose_version}/goo
 
 RUN wget https://github.com/cosmtrek/air/releases/download/v${air_version}/air_${air_version}_linux_amd64.tar.gz \
     && tar -C /usr/local/bin -xzvf air_${air_version}_linux_amd64.tar.gz \
+    && chmod +x /usr/local/bin/air \
     && rm air_${air_version}_linux_amd64.tar.gz
 
 # Dvenelopment environment
@@ -25,9 +26,6 @@ WORKDIR ${WORKDIR}
 
 RUN apt-get update
 
-COPY --from=tools /usr/local/bin/goose /bin
-COPY --from=tools /usr/local/bin/air /bin
-
 COPY ./go.mod .
 COPY ./go.sum .
 RUN go mod download
@@ -35,9 +33,12 @@ RUN go mod download
 COPY . .
 COPY ./scripts /usr/local/bin
 
+COPY --from=tools /usr/local/bin/goose /bin/goose
+COPY --from=tools /usr/local/bin/air /bin/air
+
 EXPOSE 8000
 
-ENTRYPOINT ["/bin/sh", "-c", "air", "-c", ".air.toml"]
+ENTRYPOINT ["air", "-c", ".air.toml"]
 
 
 # Builder
@@ -59,9 +60,9 @@ RUN go build -o ./bin/gin-ent-sample
 
 
 # Production environment
-FROM ubuntu AS production
+FROM gcr.io/distroless/base:debug AS production
 
-COPY --from=tools /usr/local/bin/goose /usr/local/bin
-COPY --from=builder /app/bin/gin-ent-sample /usr/local/bin
+COPY --from=tools /usr/local/bin/goose /bin/goose
+COPY --from=builder /app/bin/gin-ent-sample /bin/gin-ent-sample
 
-ENTRYPOINT ["/bin/sh", "-c", "/usr/local/bin/gin-ent-sample"]
+ENTRYPOINT ["sh", "-c", "/bin/gin-ent-sample"]
