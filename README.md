@@ -2,7 +2,7 @@
 
 This is a sample application of golang's web framework gin and orm ent.
 
-## Conponents
+## Components
 
 - Web Framework: [Gin](https://github.com/gin-gonic/gin)
 - ORM: [ent](https://github.com/ent/ent)
@@ -47,4 +47,13 @@ docker-compose up
 
 ```shell
 docker-compose down
+```
+
+### Modify Models
+
+Only the directory under /ent/schema needs to be changed.
+After the change, you can update the model as follows.
+
+```shell
+docker-compose exec app go generate ./ent
 ```
