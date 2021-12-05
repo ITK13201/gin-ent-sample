@@ -42,9 +42,7 @@ func (controller *UserController) Create(c *gin.Context) {
 
 func (controller *UserController) GetByID(c *gin.Context) {
 	ctx := context.Background()
-	id, _ := strconv.Atoi(c.Param("id"))
-	id64 := int64(id)
-
+	id64, _ := strconv.ParseInt(c.Param("id"), 10, 64)
 	u, err := controller.sqlClient.User.Get(ctx, id64)
 	if err != nil {
 		c.JSON(400, err)
