@@ -51,7 +51,7 @@ docker-compose down
 
 ### Modify Models
 
-Only the directory under /ent/schema needs to be changed.
+Only the directory under [./ent/schema](./ent/schema) needs to be changed.
 After the change, you can update the model as follows.
 
 ```shell
